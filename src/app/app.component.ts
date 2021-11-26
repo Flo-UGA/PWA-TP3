@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { TodoItem, TodoList, TodolistService } from './todolist.service';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +10,22 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 })
 export class AppComponent {
 
-  constructor() {
+  constructor(private TDLS: TodolistService) {
     /* Ajoutez un paramètre de type TodolistService au constructeur */
   }
+  
+  get obsTodoList(): Observable<TodoList> {
+    return this.TDLS.observable;
+  }
+  
+  append(label: string): void {
+    this.TDLS.append(label);
+  }
+  updateItem(item: TodoItem, u: Partial<TodoItem>): void {
+    this.TDLS.update(u, item);
+  }
 
+  delete(item: TodoItem): void {
+    this.TDLS.remove(item);
+  }
 }
